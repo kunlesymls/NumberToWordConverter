@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Kunlesymls</Authors>
+    <Description>This package enables you to convert any number to word e.g 2 will be converted to two</Description>
+    <PackageTags>word converter</PackageTags>
+    <PackageId>Number_To_Word_Converter</PackageId>
   </PropertyGroup>
 
 </Project>

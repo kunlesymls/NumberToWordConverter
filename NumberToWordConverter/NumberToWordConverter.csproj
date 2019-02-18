@@ -3,9 +3,31 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Kunlesymls</Authors>
-    <Description>This package enables you to convert any number to word e.g 2 will be converted to two</Description>
+    <Description>This package enables you to convert any number to word e.g 2 will be converted to two
+To use this package use type  GetNumberConverter("2018");</Description>
     <PackageTags>word converter</PackageTags>
     <PackageId>Number_To_Word_Converter</PackageId>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <PackageReleaseNotes>This package enables you to convert any number to word e.g 2 will be converted to two
+To use this package use type  GetNumberConverter("2018");</PackageReleaseNotes>
+    <RepositoryType>Public</RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 
 </Project>

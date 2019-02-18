@@ -4,7 +4,7 @@ namespace NumberToWordConverter
 {
     public static class WordConverter
     {
-        public static string GetNumberConverter(string input)
+        public static string GetNumberConverter(string input, string currency)
         {
             var numberSb = new StringBuilder();
             numberSb.Append(CheckForNegativity(input));
@@ -28,6 +28,9 @@ namespace NumberToWordConverter
                 //numberSb.Append(CheckForNegativity(newInput));
                 numberSb.Append(ConvertInput(newInput));
             }
+            if(!string.IsNullOrEmpty(currency))
+                numberSb.Append(currency);
+
             return numberSb.ToString();
         }
 
@@ -94,7 +97,7 @@ namespace NumberToWordConverter
             {
                 convertSb.Append(ConvertToOneBillion(input));
             }
-            convertSb.Append(" Naira Only");
+           // convertSb.Append(" Naira Only");
             return convertSb.ToString();
         }
 

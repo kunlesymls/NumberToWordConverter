@@ -4,7 +4,14 @@ namespace NumberToWordConverter
 {
     public static class WordConverter
     {
-        public static string GetNumberConverter(string input, string currency)
+        /// <summary>
+        /// This method expose the use of the class.
+        /// Supply the number  to be converted and the currency extension of your choice
+        /// </summary>
+        /// <param name="input">Value to be converterd e.g 5023</param>
+        /// <param name="currency">Currency extensions of your choice e.g Dollar </param>
+        /// <returns></returns>
+        public static string GetNumberConverter(string input, string currency = "")
         {
             var numberSb = new StringBuilder();
             numberSb.Append(CheckForNegativity(input));
@@ -29,7 +36,7 @@ namespace NumberToWordConverter
                 numberSb.Append(ConvertInput(newInput));
             }
             if(!string.IsNullOrEmpty(currency))
-                numberSb.Append(currency);
+                numberSb.Append($"  {currency}");
 
             return numberSb.ToString();
         }

@@ -1,18 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Kunlesymls</Authors>
     <Description>This package enables you to convert any number to word e.g 2 will be converted to two
 To use this package use type  GetNumberConverter("2018");</Description>
-    <PackageTags>word converter</PackageTags>
+    <PackageTags>number numberconverter word converter wordconverter</PackageTags>
     <PackageId>Number_To_Word_Converter</PackageId>
     <SignAssembly>false</SignAssembly>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
     <PackageReleaseNotes>This package enables you to convert any number to word e.g 2 will be converted to two
 To use this package use type  GetNumberConverter("2018");</PackageReleaseNotes>
     <RepositoryType>Public</RepositoryType>
+    <RepositoryUrl>https://github.com/kunlesymls/NumberToWordConverter.git</RepositoryUrl>
+    <Version>1.1.4</Version>
+    <NeutralLanguage></NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>

@@ -13,37 +13,41 @@ namespace NumberToWordConverter
         /// <returns></returns>
         public static string GetNumberConverter(string input, string currency = "")
         {
-            var numberSb = new StringBuilder();
-            numberSb.Append(CheckForNegativity(input));
-            var newInput = RemoveNegativity(input);
-
-            if (newInput.Contains("."))
+            if (!string.IsNullOrEmpty(input))
             {
-                //numberSb.Append(CheckForNegativity(newInput));
-                var splitInput = newInput.Split('.');
-                numberSb.Append(ConvertInput(splitInput[0]));
-                numberSb.Append(" (dot) ");
-                var secondPart = splitInput[1].ToCharArray();
-                foreach (var number in secondPart)
+                var numberSb = new StringBuilder();
+                numberSb.Append(CheckForNegativity(input));
+                var newInput = RemoveNegativity(input);
+
+                if (newInput.Contains("."))
                 {
-                    numberSb.Append(ConvertTwoDigit(number.ToString()));
-                    numberSb.Append(" ");
+                    //numberSb.Append(CheckForNegativity(newInput));
+                    var splitInput = newInput.Split('.');
+                    numberSb.Append(ConvertInput(splitInput[0]));
+                    numberSb.Append(" (dot) ");
+                    var secondPart = splitInput[1].ToCharArray();
+                    foreach (var number in secondPart)
+                    {
+                        numberSb.Append(ConvertTwoDigit(number.ToString()));
+                        numberSb.Append(" ");
+                    }
                 }
-            }
-            else
-            {
-                //numberSb.Append(CheckForNegativity(newInput));
-                numberSb.Append(ConvertInput(newInput));
-            }
-            if(!string.IsNullOrEmpty(currency))
-                numberSb.Append($"  {currency}");
+                else
+                {
+                    //numberSb.Append(CheckForNegativity(newInput));
+                    numberSb.Append(ConvertInput(newInput));
+                }
+                if (!string.IsNullOrEmpty(currency))
+                    numberSb.Append($"  {currency}");
 
-            return numberSb.ToString();
+                return numberSb.ToString();
+            }
+            return "Please type in a value";
         }
 
         private static string CheckForNegativity(string input)
         {
-            if (input.StartsWith("-"))
+            if (input.StartsWith("-", System.StringComparison.CurrentCulture))
             {
                 return "Minus ";
             }

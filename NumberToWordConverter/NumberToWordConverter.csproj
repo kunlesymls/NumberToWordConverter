@@ -4,17 +4,26 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Kunlesymls</Authors>
     <Description>This package enables you to convert any number to word e.g 2 will be converted to two
-To use this package use type  GetNumberConverter("2018");</Description>
+To use this package use type  "NumberToWord.Convert(56);"
+To covert directly to currency format "NumberToWord.CurrencyFormat(15.326m, "Dollar", "Cent");"</Description>
     <PackageTags>number numberconverter word converter wordconverter</PackageTags>
     <PackageId>Number_To_Word_Converter</PackageId>
     <SignAssembly>false</SignAssembly>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
-    <PackageReleaseNotes>This package enables you to convert any number to word e.g 2 will be converted to two
-To use this package use type  GetNumberConverter("2018");</PackageReleaseNotes>
+    <PackageReleaseNotes>This version fix some bug and makes special consideration for currency conversion by specifying the currency and the unit. Its now extended to One Quadrillion (16) digits conversion.
+
+Console.WriteLine(WordConverter.GetNumberConverter("-5321.56", "dot"));
+
+Console.WriteLine(WordConverter.ConverterToCurrency("862,999,256,856,214.56", "Naira", "Kobo"));
+
+Console.WriteLine(WordConverter.ConverterToCurrency("1,162,050,500,000,214.56", "Naira", "Kobo"));
+
+
+</PackageReleaseNotes>
     <RepositoryType>Public</RepositoryType>
     <RepositoryUrl>https://github.com/kunlesymls/NumberToWordConverter.git</RepositoryUrl>
-    <Version>1.1.5</Version>
+    <Version>1.1.8</Version>
     <NeutralLanguage></NeutralLanguage>
   </PropertyGroup>
 
@@ -25,6 +34,14 @@ To use this package use type  GetNumberConverter("2018");</PackageReleaseNotes>
     <EmbeddedResource Remove="Content\**" />
     <None Remove="ContentFiles\**" />
     <None Remove="Content\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="readme.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="readme.txt" />
   </ItemGroup>
 
   <ItemGroup>

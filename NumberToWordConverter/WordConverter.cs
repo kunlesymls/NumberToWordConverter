@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace NumberToWordConverter
 {
@@ -9,12 +10,13 @@ namespace NumberToWordConverter
         /// Supply the number  to be converted and the currency extension of your choice
         /// </summary>
         /// <param name="input">Value to be converterd e.g 5023</param>
-        /// <param name="currency">Currency extensions of your choice e.g Dollar </param>
+        /// <param name="separator">Currency extensions of your choice e.g Dollar </param>
         /// <returns></returns>
-        public static string GetNumberConverter(string input, string currency = "")
+        public static string GetNumberConverter(string input, string separator = "point")
         {
             if (!string.IsNullOrEmpty(input))
             {
+                input = input.Replace(",", "");
                 var numberSb = new StringBuilder();
                 numberSb.Append(CheckForNegativity(input));
                 var newInput = RemoveNegativity(input);
@@ -24,7 +26,7 @@ namespace NumberToWordConverter
                     //numberSb.Append(CheckForNegativity(newInput));
                     var splitInput = newInput.Split('.');
                     numberSb.Append(ConvertInput(splitInput[0]));
-                    numberSb.Append(" (dot) ");
+                    numberSb.Append($" {separator} ");
                     var secondPart = splitInput[1].ToCharArray();
                     foreach (var number in secondPart)
                     {
@@ -34,15 +36,84 @@ namespace NumberToWordConverter
                 }
                 else
                 {
-                    //numberSb.Append(CheckForNegativity(newInput));
                     numberSb.Append(ConvertInput(newInput));
                 }
-                if (!string.IsNullOrEmpty(currency))
-                    numberSb.Append($"  {currency}");
+                numberSb.Append(".");
 
                 return numberSb.ToString();
             }
             return "Please type in a value";
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input">Value to be converterd e.g 5023</param>
+        /// <param name="currency">Currency extensions of your choice e.g Dollar </param>
+        /// <param name="unit"> currency extension e.g kobo or cent </param>
+        /// <returns></returns>
+        public static string ConverterToCurrency(string input, string currency = "Naira", string unit = "Kobo")
+        {
+            if (!string.IsNullOrEmpty(input))
+            {
+                input = input.Replace(",", "");
+                var numberSb = new StringBuilder();
+                numberSb.Append(CheckForNegativity(input));
+                var newInput = RemoveNegativity(input);
+
+                if (newInput.Contains("."))
+                {
+                    var splitInput = newInput.Split('.');
+                    numberSb.Append(ConvertInput(splitInput[0]));
+                    numberSb.Append($" {currency}");
+
+                    var checkForZero = ConvertInput(splitInput[1]);
+                    if (!checkForZero.Equals("Zero"))
+                    {
+                        numberSb.Append(" and ");
+                        numberSb.Append(ConvertInput(splitInput[1]));
+                        numberSb.Append($" {unit}");
+                    }                   
+
+                }
+                else
+                {
+                    //numberSb.Append(CheckForNegativity(newInput));
+                    numberSb.Append(ConvertInput(newInput));
+                    numberSb.Append($" {currency}");
+                }              
+
+                numberSb.Append($" only.");
+                return numberSb.ToString();
+            }
+            return "Please type in a value";
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input">Value to be converterd e.g 5023</param>
+        /// <param name="currency">Currency extensions of your choice e.g Dollar </param>
+        /// <param name="unit"> currency extension e.g kobo or cent </param>
+        /// <returns></returns>
+        public static string ConverterToCurrency(double doubleinput, string currency = "Naira", string unit = "Kobo")
+        {
+            var input = Math.Round(doubleinput, 2).ToString();
+            return ConverterToCurrency(input, currency, unit);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input">Value to be converterd e.g 5023</param>
+        /// <param name="currency">Currency extensions of your choice e.g Dollar </param>
+        /// <param name="unit"> currency extension e.g kobo or cent </param>
+        /// <returns></returns>
+        public static string ConverterToCurrency(decimal decimalinput, string currency = "Naira", string unit = "Kobo")
+        {
+            var input = Math.Round(decimalinput, 2).ToString();
+            return ConverterToCurrency(input, currency, unit);
         }
 
         private static string CheckForNegativity(string input)
@@ -108,14 +179,187 @@ namespace NumberToWordConverter
             {
                 convertSb.Append(ConvertToOneBillion(input));
             }
-           // convertSb.Append(" Naira Only");
+            else if (inputLength.Equals(11))
+            {
+                convertSb.Append(ConvertToTenBillion(input));
+            }
+            else if (inputLength.Equals(12))
+            {
+                convertSb.Append(ConvertHundredTenBillion(input));
+            }
+            else if (inputLength.Equals(13))
+            {
+                convertSb.Append(ConvertOneTrillion(input));
+            }
+            else if (inputLength.Equals(14))
+            {
+                convertSb.Append(ConvertTenTrillion(input));
+            }
+            else if (inputLength.Equals(15))
+            {
+                convertSb.Append(ConvertHundredTrillion(input));
+            }
+            else if (inputLength.Equals(16))
+            {
+                convertSb.Append(ConvertOneQuadrillion(input));
+            }
+
+            // convertSb.Append(" Naira Only");Quadrillion 
             return convertSb.ToString();
+        }
+
+        private static string ConvertOneQuadrillion(string input)
+        {
+            var oneQuadrillionSb = new StringBuilder();
+            if (input.StartsWith("0", System.StringComparison.CurrentCulture))
+            {
+                var fifteenDigitOutput = RemoveZeroFromTheBegining(input);
+                oneQuadrillionSb.Append(ConvertHundredTrillion(fifteenDigitOutput));
+            }
+            else
+            {
+                var firstNumber = input.Substring(0, 1);
+                oneQuadrillionSb.Append($"{ConvertTwoDigit(firstNumber)} Quadrillion");
+                var otherNumber = input.Substring(1, 15);
+                if (otherNumber.Equals("000000000000000"))
+                {
+                }
+                else
+                {
+                    oneQuadrillionSb.Append(", ");
+                    oneQuadrillionSb.Append(ConvertHundredTrillion(otherNumber));
+                }
+            }
+            return oneQuadrillionSb.ToString();
+        }
+
+        private static string ConvertHundredTrillion(string input)
+        {
+            var hundredTrillionSb = new StringBuilder();
+            if (input.StartsWith("0", System.StringComparison.CurrentCulture))
+            {
+                var fourteenDigitOutput = RemoveZeroFromTheBegining(input);
+                hundredTrillionSb.Append(ConvertTenTrillion(fourteenDigitOutput));
+            }
+            else
+            {
+                var firstNumber = input.Substring(0, 3);
+                hundredTrillionSb.Append($"{ConvertToHundred(firstNumber)} Trillion");
+                var otherNumber = input.Substring(3, 12);
+                if (otherNumber.Equals("000000000000"))
+                {
+                }
+                else
+                {
+                    hundredTrillionSb.Append(", ");
+                    hundredTrillionSb.Append(ConvertHundredTenBillion(otherNumber));
+                }
+            }
+            return hundredTrillionSb.ToString();
+        }
+
+        private static string ConvertTenTrillion(string input)
+        {
+            var tenTrillionSb = new StringBuilder();
+            if (input.StartsWith("0", System.StringComparison.CurrentCulture))
+            {
+                var thirteenDigitOutput = RemoveZeroFromTheBegining(input);
+                tenTrillionSb.Append(ConvertOneTrillion(thirteenDigitOutput));
+            }
+            else
+            {
+                var firstNumber = input.Substring(0, 2);
+                tenTrillionSb.Append($"{JustTwoDigitConverter(firstNumber)} Trillion");
+                var otherNumber = input.Substring(2, 12);
+                if (otherNumber.Equals("000000000000"))
+                {
+                }
+                else
+                {
+                    tenTrillionSb.Append(", ");
+                    tenTrillionSb.Append(ConvertHundredTenBillion(otherNumber));
+                }
+            }
+            return tenTrillionSb.ToString();
+        }
+        private static string ConvertOneTrillion(string input)
+        {
+            var oneTrillionSb = new StringBuilder();
+            if (input.StartsWith("0", System.StringComparison.CurrentCulture))
+            {
+                var twelveDigitOutput = RemoveZeroFromTheBegining(input);
+                oneTrillionSb.Append(ConvertHundredTenBillion(twelveDigitOutput));
+            }
+            else
+            {
+                var firstNumber = input.Substring(0, 1);
+                oneTrillionSb.Append($"{ConvertTwoDigit(firstNumber)} Trillion");
+                var otherNumber = input.Substring(1, 12);
+                if (otherNumber.Equals("000000000000"))
+                {
+                }
+                else
+                {
+                    oneTrillionSb.Append(", ");
+                    oneTrillionSb.Append(ConvertHundredTenBillion(otherNumber));
+                }
+            }
+            return oneTrillionSb.ToString();
+        }
+
+        private static string ConvertHundredTenBillion(string input)
+        {
+            var hundredBillionSb = new StringBuilder();
+            if (input.StartsWith("0", System.StringComparison.CurrentCulture))
+            {
+                var elevenDigitOutput = RemoveZeroFromTheBegining(input);
+                hundredBillionSb.Append(ConvertToTenBillion(elevenDigitOutput));
+            }
+            else
+            {
+                var firstNumber = input.Substring(0, 3);
+                hundredBillionSb.Append($"{ConvertToHundred(firstNumber)} Billion");
+                var otherNumber = input.Substring(3, 9);
+                if (otherNumber.Equals("000000000"))
+                {
+                }
+                else
+                {
+                    hundredBillionSb.Append(", ");
+                    hundredBillionSb.Append(ConvertToHundredMillion(otherNumber));
+                }
+            }
+            return hundredBillionSb.ToString();
+        }
+        private static string ConvertToTenBillion(string input)
+        {
+            var tenBillionSb = new StringBuilder();
+            if (input.StartsWith("0", System.StringComparison.CurrentCulture))
+            {
+                var tenDigitOutput = RemoveZeroFromTheBegining(input);
+                tenBillionSb.Append(ConvertToOneBillion(tenDigitOutput));
+            }
+            else
+            {
+                var firstNumber = input.Substring(0, 2);
+                tenBillionSb.Append($"{JustTwoDigitConverter(firstNumber)} Billion");
+                var otherNumber = input.Substring(2, 9);
+                if (otherNumber.Equals("000000000"))
+                {
+                }
+                else
+                {
+                    tenBillionSb.Append(", ");
+                    tenBillionSb.Append(ConvertToHundredMillion(otherNumber));
+                }
+            }
+            return tenBillionSb.ToString();
         }
 
         private static string ConvertToOneBillion(string input)
         {
             var oneBillionSb = new StringBuilder();
-            if (input.StartsWith("0"))
+            if (input.StartsWith("0", System.StringComparison.CurrentCulture))
             {
                 var nineDigitOutput = RemoveZeroFromTheBegining(input);
                 oneBillionSb.Append(ConvertToHundredMillion(nineDigitOutput));
@@ -133,7 +377,6 @@ namespace NumberToWordConverter
                     oneBillionSb.Append(", ");
                     oneBillionSb.Append(ConvertToHundredMillion(otherNumber));
                 }
-                //ouput.Append(ConvertToHundred(input));
             }
             return oneBillionSb.ToString();
         }
@@ -260,7 +503,7 @@ namespace NumberToWordConverter
                 }
                 else
                 {
-                    tenThousandStringBuilder.Append(", ");
+                    tenThousandStringBuilder.Append(" and ");
                     tenThousandStringBuilder.Append(ConvertToHundred(otherNumber));
                 }
             }
@@ -323,7 +566,7 @@ namespace NumberToWordConverter
             var twoDigitSb = new StringBuilder();
             //string twoDigitOutput = string.Empty;
 
-            if (twoInput.StartsWith("0"))
+            if (twoInput.StartsWith("0", System.StringComparison.CurrentCulture))
             {
                 var twoDigitOutput = RemoveZeroFromTheBegining(twoInput);
                 twoDigitSb.Append(ConvertTwoDigit(twoDigitOutput));
@@ -343,7 +586,7 @@ namespace NumberToWordConverter
                     }
                     else
                     {
-                        twoDigitSb.Append(" - ");
+                        twoDigitSb.Append(" ");
                         twoDigitSb.Append(ConvertTwoDigit($"{spiltInput[i]}"));
                     }
                     //twoDigitStringBuuilder.Append(i == 0
@@ -450,7 +693,7 @@ namespace NumberToWordConverter
                     return "Ninety";
 
                 default:
-                    return "Not a two digit number";
+                    return "";
             }
         }
     }
